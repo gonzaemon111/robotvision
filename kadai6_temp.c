@@ -10,10 +10,10 @@
 
 #define CAMERA_CENTER_H 90 //カメラサーボの垂直方向中央値（キャリブレーションに利用）
 #define CAMERA_CENTER_V 90 //カメラサーボの垂直方向中央値（キャリブレーションに利用）
-#define MOTOR_DEFAULT_L 128 //左モータのデフォルト値（キャリブレーションに利用）
-#define MOTOR_DEFAULT_R 128 //右モータのデフォルト値（キャリブレーションに利用）
+#define MOTOR_DEFAULT_L 124 //左モータのデフォルト値（キャリブレーションに利用）
+#define MOTOR_DEFAULT_R 132 //右モータのデフォルト値（キャリブレーションに利用）
 #define CAMERA_INIT_V 70 //カメラサーボの垂直方向初期値
-#define CAMERA_INIT_H 90 //カメラサーボの水平方向初期値
+#define CAMERA_INIT_H 100 //カメラサーボの水平方向初期値
 
 
 
@@ -101,17 +101,26 @@ int main(int argc, char **argv)
     cvShowImage("contour", contour);
     key = cvWaitKey(1);
     ////
-    motor(178, 178); // ひたすら直進
+
     if(topContoursInfo[0].area > 0)
     {
+      motor(155, 160); // ひたすら直進    (*)
       /// 赤い物体を見つけた場合
       CvBox2D oblique = topContoursInfo[0].oblique; // 認識した物体を囲む長方形
       int x = oblique.center.x;                            // 認識した物体の画面内のx座標(0~239)
       int y = oblique.center.y;                            // 認識した物体の画面内のy座標(0~269)
+			printf("今ここ１ーーーーーーーーーーーーー\n");
+      printf("%d\n", y);
+      if (y >= 255) {
+				printf("今ここ222ーーーーーーーーーーーーー\n");
+				usleep(0.7 * 1000000);
+      }
     }
     else
     {
+      motor(128, 128);
       /// 赤い物体が見つからなかった場合
+      // 課題7では「探す」動作を記述
     }
     ////
     if (key == 'q') break;
